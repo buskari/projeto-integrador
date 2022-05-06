@@ -46,9 +46,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 								.antMatchers(WHITELIST)
 								.permitAll()
 								.antMatchers("/supervisor")
-									.hasAuthority("ADMIN")
+								.hasAuthority("ADMIN")
 								.antMatchers("/inboundorder")
 								.hasAuthority("Supervisor")
+								.antMatchers("/orders")
+								.hasAuthority("Buyer")
+								.antMatchers("/products")
+								.hasAuthority("Seller")
+								.antMatchers("/warehouse")
+								.hasAuthority("ADMIN")
 								.anyRequest().authenticated();
 
 				http.addFilterBefore(new CustomAuthorizationFIlter(), UsernamePasswordAuthenticationFilter.class);

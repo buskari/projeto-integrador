@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -19,6 +20,8 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
@@ -41,9 +44,12 @@ public class PurchaseOrderControllerTest {
 
     @Test
     public void shouldCreateAPurchaseOrderAndReturn201() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Buyer");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         mockMvc.perform(MockMvcRequestBuilders.post("/orders")
                 .contentType(MediaType.APPLICATION_JSON)
-                .with(user("Buyer").password("123"))
+                .with(user("Buyer").password("123").authorities(simpleGrantedAuthorities))
                 .content(payload()))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json"))
@@ -52,8 +58,11 @@ public class PurchaseOrderControllerTest {
 
     @Test
     public void shouldFindByIdAndReturn200() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Buyer");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/orders")
-                .with(user("Buyer").password("123"))
+                .with(user("Buyer").password("123").authorities(simpleGrantedAuthorities))
                 .param("id", "1"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
@@ -69,8 +78,11 @@ public class PurchaseOrderControllerTest {
 
     @Test
     public void shouldUpdateAndReturn200() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Buyer");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.put("/orders")
-                .with(user("Buyer").password("123"))
+                .with(user("Buyer").password("123").authorities(simpleGrantedAuthorities))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(payload())
                 .param("id", "1"))

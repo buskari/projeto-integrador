@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
@@ -21,6 +22,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.user;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -42,10 +46,13 @@ public class ProductControllerTest {
 
     @Test
     public void shouldCreateAProductAndReturn201() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Seller");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
                 mockMvc.perform(MockMvcRequestBuilders.post("/products")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payloadProduct())
-                        .with(user("Seller").password("123")))
+                        .with(user("Seller").password("123").authorities(simpleGrantedAuthorities)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
@@ -53,8 +60,11 @@ public class ProductControllerTest {
 
     @Test
     public void shouldFindByCategoryAndReturn200() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Seller");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/category/{category}", "CONGELADOS")
-                .with(user("Seller").password("123")))
+                .with(user("Seller").password("123").authorities(simpleGrantedAuthorities)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
@@ -63,8 +73,11 @@ public class ProductControllerTest {
 
     @Test
     public void shouldFindAllAndReturn200() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Seller");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products")
-                .with(user("Seller").password("123")))
+                .with(user("Seller").password("123").authorities(simpleGrantedAuthorities)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();
@@ -73,8 +86,11 @@ public class ProductControllerTest {
 
     @Test
     public void shouldFindByBatchStockByProductsAndReturn200() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Seller");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/list/{id}", "1" )
-                .with(user("Seller").password("123")))
+                .with(user("Seller").password("123").authorities(simpleGrantedAuthorities)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         ObjectMapper objectMapper = new ObjectMapper();
@@ -88,8 +104,11 @@ public class ProductControllerTest {
 
     @Test
     public void shouldFindByIdAndReturn200() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("Seller");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         MvcResult result = mockMvc.perform(MockMvcRequestBuilders.get("/products/{id}", "1" )
-                .with(user("Seller").password("123")))
+                .with(user("Seller").password("123").authorities(simpleGrantedAuthorities)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
                 .andReturn();
         String response = result.getResponse().getContentAsString();

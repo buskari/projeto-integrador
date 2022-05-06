@@ -13,12 +13,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.hamcrest.Matchers.containsString;
@@ -52,10 +54,13 @@ public class WarehouseControllerTest {
     }
     @Test
     public void shouldCreateAWarehouseAndReturn201() throws Exception {
+        SimpleGrantedAuthority supervisor = new SimpleGrantedAuthority("ADMIN");
+        ArrayList<SimpleGrantedAuthority> simpleGrantedAuthorities = new ArrayList<>();
+        simpleGrantedAuthorities.add(supervisor);
         MvcResult mvcResult = mockMvc.perform(post("/warehouse")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(getObject())
-                        .with(user("Supervisor").password("123")))
+                        .with(user("Supervisor").password("123").authorities(simpleGrantedAuthorities)))
                 .andExpect(status().isCreated())
                 .andExpect(content().contentType("application/json"))
                 .andReturn();
