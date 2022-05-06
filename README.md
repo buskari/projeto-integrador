@@ -31,7 +31,7 @@ URL Base: localhost:8080/api/v1/fresh-products
 | `POST` | `/warehouse` | Cadastra um armazém |{"name": "embu","regiao": "Zona Sul SP"}|
 | `GET` | `/warehouse/products?productId=1` | Obtenha a quantidade total de produtos por armazém | --|
 | `GET` | `/warehouse/{id}` | Obtenha um armazém pelo id|-- |
-| `GET` | `/batchstock/duedate?days=600&sectorId=1` | Obtenha uma lista de lotes dentro do prazo de validade solicitado, que pertencem a uma determinada categoria de produto (FS = FRESCOS, RF = REFRIGERADO, FF = CONGELADO)|-- |
+| `GET` | `/batchstock/days=1600&sectorId=1&category=CONGELADOS` | Obtenha uma lista de lotes dentro do prazo de validade solicitado, que pertencem a uma determinada categoria de produto (FRESCOS, REFRIGERADOS, CONGELADOS)|-- |
 
 [Clique aqui](https://github.com/buskari/projeto-integrador/tree/develop/script-sql) para acessar o script para popular o banco de dados.
 * Usuário do tipo Buyer é o único que cadastra "/orders"
