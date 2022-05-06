@@ -56,7 +56,7 @@ public class SellerService {
         List<PurchasedOrder> purchasedOrders = purchasedOrderRepository.findAll();
 
         List<PurchasedOrder> finishedOrders = purchasedOrders.stream()
-                .filter(order -> order.getStatus().equals("fechado")).collect(Collectors.toList());
+                .filter(order -> order.getStatus().equals("finalizado")).collect(Collectors.toList());
 
         if(finishedOrders.isEmpty()) {
             throw new RuntimeException("Não existem vendas finalizadas");
