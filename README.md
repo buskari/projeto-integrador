@@ -34,7 +34,9 @@ URL Base: localhost:8080/api/v1/fresh-products
 | `GET` | `/batchstock/duedate?days=600&sectorId=1` | Obtenha uma lista de lotes dentro do prazo de validade solicitado, que pertencem a uma determinada categoria de produto (FS = FRESCOS, RF = REFRIGERADO, FF = CONGELADO)|-- |
 
 [Clique aqui](https://github.com/buskari/projeto-integrador/tree/develop/script-sql) para acessar o script para popular o banco de dados.
-
+* Usuário do tipo Buyer é o único que cadastra "/orders"
+* Usuário do tipo Seller é o único que cadastra "/products"
+* Usuário do tipo Supervisor é o único que cadastra "/inboundorder"
 
 
 ## Autores
